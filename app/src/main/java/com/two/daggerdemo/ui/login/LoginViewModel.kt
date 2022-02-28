@@ -1,12 +1,10 @@
 package com.two.daggerdemo.ui.login
 
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.*
 import androidx.savedstate.SavedStateRegistryOwner
 import com.two.daggerdemo.network.beans.LoginResponse
 import com.two.daggerdemo.repository.UserRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 
 class LoginViewModel(
@@ -17,22 +15,17 @@ class LoginViewModel(
 
     fun onLoginClicked(userName : String, password : String){
         userRepository.performLogin(userName,password)
-            .onCompletion {
-                Log.d(LoginViewModel::class.simpleName,"onCompletion")
-            }
             .onEach {  loginResponse ->
                 message.postValue("Success !!")
                 saveUserDetails(loginResponse)
             }
             .catch {
-                Log.e(LoginViewModel::class.simpleName, "Failed to receive response", it)
                 message.postValue("Invalid credentials, please try again")
             }
             .launchIn(viewModelScope)
     }
 
     private fun saveUserDetails(loginResponse: LoginResponse) {
-        Log.d(LoginViewModel::class.simpleName,"$loginResponse")
         userRepository.saveData(loginResponse.cookie,loginResponse.imgAvatar)
     }
 

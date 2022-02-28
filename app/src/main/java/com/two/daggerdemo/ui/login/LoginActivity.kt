@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.two.daggerdemo.R
+import com.two.daggerdemo.car.CarFactory
 import com.two.daggerdemo.di.ActivityModule
 import com.two.daggerdemo.di.AppModule
 import com.two.daggerdemo.di.DaggerMainComponent
@@ -22,6 +23,14 @@ class LoginActivity : AppCompatActivity() {
         injectDagger()
         setupViews()
         setupObserver()
+        createCarFactory()
+    }
+
+    private fun createCarFactory() {
+        val carFactory = CarFactory()
+        carFactory.createElectricCar()
+        carFactory.createGasCar()
+        carFactory.createPetrolCar()
     }
 
     private fun injectDagger() {
